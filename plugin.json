@@ -1,0 +1,112 @@
+{
+  "name": "Stream Stats",
+  "version": "0.2.0",
+  "description": "Per-provider numbers from what viewers actually did: streams checked, knocked down and skipped, how often each provider ranks first, top 3 and top 5, and the good streams it brings as well as its failure rate. Read only: it changes nothing and never opens a stream.",
+  "author": "Kurrt",
+  "license": "MIT",
+  "min_dispatcharr_version": "0.33.0",
+  "fields": [
+    {
+      "id": "report_days",
+      "label": "Report window (days)",
+      "type": "number",
+      "default": 30,
+      "help_text": "How far back reports look."
+    },
+    {
+      "id": "retention_days",
+      "label": "Keep data (days)",
+      "type": "number",
+      "default": 90,
+      "help_text": "Older numbers are deleted."
+    },
+    {
+      "id": "rescue_seconds",
+      "label": "Rescue counts after (seconds)",
+      "type": "number",
+      "default": 30,
+      "help_text": "A failover onto a stream counts as a rescue once it holds this long."
+    },
+    {
+      "id": "thin_tries",
+      "label": "Unproven below (tries)",
+      "type": "number",
+      "default": 20,
+      "help_text": "A provider with fewer tries is marked unproven."
+    },
+    {
+      "id": "solid_tries",
+      "label": "Solid above (tries)",
+      "type": "number",
+      "default": 100,
+      "help_text": "A provider with at least this many tries is marked solid."
+    },
+    {
+      "id": "thin_streams",
+      "label": "Data: unproven below (streams)",
+      "type": "number",
+      "default": 5,
+      "help_text": "So many tries of a few streams don't look like proof about a whole provider."
+    },
+    {
+      "id": "solid_streams",
+      "label": "Data: solid above (streams)",
+      "type": "number",
+      "default": 20
+    },
+    {
+      "id": "report_folder",
+      "label": "Report folder",
+      "type": "string",
+      "default": "",
+      "help_text": "Leave empty for /data/plugin_reports/stream-stats."
+    }
+  ],
+  "actions": [
+    {
+      "id": "on_event",
+      "label": "Event handler",
+      "description": "Runs by itself on these events. The button does nothing.",
+      "events": [
+        "channel_start",
+        "stream_switch",
+        "channel_error",
+        "channel_reconnect",
+        "channel_buffering",
+        "channel_stop",
+        "m3u_refresh"
+      ],
+      "button_label": "Idle",
+      "button_variant": "subtle"
+    },
+    {
+      "id": "summary",
+      "label": "Summary",
+      "description": "One line per provider.",
+      "button_label": "Show"
+    },
+    {
+      "id": "report",
+      "label": "Write report",
+      "description": "Writes an HTML page, a CSV and a JSON file.",
+      "button_label": "Write"
+    },
+    {
+      "id": "snapshot",
+      "label": "Save today's order now",
+      "description": "Happens by itself once a day. Use this the first time so tomorrow has something to compare with.",
+      "button_label": "Save"
+    },
+    {
+      "id": "erase_data",
+      "label": "Erase collected numbers",
+      "button_label": "Erase",
+      "button_color": "red",
+      "confirm": {
+        "required": true,
+        "title": "Erase all collected numbers?",
+        "message": "This can't be undone. Nothing in Dispatcharr itself changes."
+      }
+    }
+  ]
+}
